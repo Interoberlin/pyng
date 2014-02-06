@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import de.interoberlin.pyng.R;
 import de.interoberlin.pyng.controller.PyngController;
 import de.interoberlin.pyng.model.objects.Ball;
 import de.interoberlin.pyng.model.objects.Panel;
@@ -84,7 +85,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		canvas.drawRect(0, 0, w, h, background);
 
 		// Draw line
-		int lineWidth = Properties.getMinDimension() / 120;
+		int lineWidth = (int) PyngController.getContext().getResources().getDimension(R.dimen.lineWidth);
 		canvas.drawRect(0, h / 2 - lineWidth, w, h / 2 + lineWidth, white);
 
 		// Draw ball
@@ -93,7 +94,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		{
 		    float ballX = b.getPos().getX();
 		    float ballY = b.getPos().getY();
-		    int ballRadius = Properties.getMinDimension() / 30;
+		    int ballRadius = b.getRadius();
 		    canvas.drawCircle(ballX, ballY, ballRadius, white);
 		}
 
@@ -101,9 +102,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		Panel p = PyngController.getPanel();
 		if (p != null)
 		{
-		    float panelWidth = Properties.getMinDimension() / 8;
-		    float panelHeight = Properties.getMinDimension() / 40;
-		    canvas.drawRect(p.getPos().getX() - panelWidth / 2, h - panelHeight, p.getPos().getX() + panelWidth / 2, h, white);
+		    canvas.drawRect(p.getPos().getX() - p.getWidth() / 2, h - p.getHeight(), p.getPos().getX() + p.getWidth() / 2, h, white);
 		}
 
 		surfaceHolder.unlockCanvasAndPost(canvas);

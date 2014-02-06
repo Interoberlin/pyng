@@ -9,7 +9,7 @@ package de.interoberlin.pyng;
 
 public final class R {
     public static final class array {
-        public static final int loglevel=0x7f060000;
+        public static final int loglevel=0x7f070000;
     }
     public static final class attr {
     }
@@ -21,46 +21,52 @@ public final class R {
         public static final int white=0x7f040001;
         public static final int yellow=0x7f040002;
     }
+    public static final class dimen {
+        public static final int ballRadius=0x7f050000;
+        public static final int lineWidth=0x7f050003;
+        public static final int panelHeight=0x7f050002;
+        public static final int panelWidth=0x7f050001;
+    }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int splash=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f090009;
-        public static final int btnCancel=0x7f090016;
-        public static final int btnSave=0x7f090017;
-        public static final int btnSendMail=0x7f09001e;
-        public static final int cbAutoRefresh=0x7f090007;
-        public static final int cbGet=0x7f090015;
-        public static final int cbPost=0x7f090014;
-        public static final int etFrequency=0x7f090013;
-        public static final int etLogBuffer=0x7f09000b;
-        public static final int etURL=0x7f090011;
-        public static final int linearLayout1=0x7f090001;
-        public static final int menu_debug=0x7f09001f;
-        public static final int menu_log=0x7f090021;
-        public static final int menu_settings=0x7f090020;
-        public static final int menu_support=0x7f090022;
-        public static final int sbSensitivityX=0x7f09000d;
-        public static final int sbSensitivityY=0x7f09000f;
-        public static final int scrl=0x7f090000;
-        public static final int spnnrLogLevel=0x7f090008;
-        public static final int tableRow1=0x7f090003;
-        public static final int tableRow2=0x7f090004;
-        public static final int tableRow3=0x7f090005;
-        public static final int tableRow4=0x7f090006;
-        public static final int tbl=0x7f090002;
-        public static final int textView1=0x7f090019;
-        public static final int textViewBuildBy=0x7f090018;
-        public static final int textViewFlo=0x7f09001a;
-        public static final int textViewJulian=0x7f09001b;
-        public static final int textViewMatthias=0x7f09001c;
-        public static final int textViewVersion=0x7f09001d;
-        public static final int tvFrequency=0x7f090012;
-        public static final int tvLogBuffer=0x7f09000a;
-        public static final int tvSensitivityX=0x7f09000c;
-        public static final int tvSensitivityY=0x7f09000e;
-        public static final int tvUrl=0x7f090010;
+        public static final int LinearLayout1=0x7f0a0009;
+        public static final int btnCancel=0x7f0a0016;
+        public static final int btnSave=0x7f0a0017;
+        public static final int btnSendMail=0x7f0a001e;
+        public static final int cbAutoRefresh=0x7f0a0007;
+        public static final int cbGet=0x7f0a0015;
+        public static final int cbPost=0x7f0a0014;
+        public static final int etFrequency=0x7f0a0013;
+        public static final int etLogBuffer=0x7f0a000b;
+        public static final int etURL=0x7f0a0011;
+        public static final int linearLayout1=0x7f0a0001;
+        public static final int menu_debug=0x7f0a001f;
+        public static final int menu_log=0x7f0a0021;
+        public static final int menu_settings=0x7f0a0020;
+        public static final int menu_support=0x7f0a0022;
+        public static final int sbSensitivityX=0x7f0a000d;
+        public static final int sbSensitivityY=0x7f0a000f;
+        public static final int scrl=0x7f0a0000;
+        public static final int spnnrLogLevel=0x7f0a0008;
+        public static final int tableRow1=0x7f0a0003;
+        public static final int tableRow2=0x7f0a0004;
+        public static final int tableRow3=0x7f0a0005;
+        public static final int tableRow4=0x7f0a0006;
+        public static final int tbl=0x7f0a0002;
+        public static final int textView1=0x7f0a0019;
+        public static final int textViewBuildBy=0x7f0a0018;
+        public static final int textViewFlo=0x7f0a001a;
+        public static final int textViewJulian=0x7f0a001b;
+        public static final int textViewMatthias=0x7f0a001c;
+        public static final int textViewVersion=0x7f0a001d;
+        public static final int tvFrequency=0x7f0a0012;
+        public static final int tvLogBuffer=0x7f0a000a;
+        public static final int tvSensitivityX=0x7f0a000c;
+        public static final int tvSensitivityY=0x7f0a000e;
+        public static final int tvUrl=0x7f0a0010;
     }
     public static final class layout {
         public static final int activity_log=0x7f030000;
@@ -70,42 +76,42 @@ public final class R {
         public static final int activity_support=0x7f030004;
     }
     public static final class menu {
-        public static final int activity_basic=0x7f080000;
-        public static final int activity_log=0x7f080001;
-        public static final int activity_main=0x7f080002;
+        public static final int activity_basic=0x7f090000;
+        public static final int activity_log=0x7f090001;
+        public static final int activity_main=0x7f090002;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
-        public static final int ball=0x7f05001b;
-        public static final int btnCancel=0x7f050016;
-        public static final int btnGet=0x7f05000b;
-        public static final int btnPost=0x7f05000a;
-        public static final int btnRefresh=0x7f050019;
-        public static final int btnSave=0x7f050017;
-        public static final int cbAutoRefresh=0x7f05001a;
-        public static final int frequency=0x7f05001e;
-        public static final int get=0x7f050009;
-        public static final int logBuffer=0x7f050018;
-        public static final int menu_debug=0x7f050002;
-        public static final int menu_log=0x7f050012;
-        public static final int menu_settings=0x7f050001;
-        public static final int menu_support=0x7f050003;
-        public static final int orientation=0x7f05001d;
-        public static final int post=0x7f050008;
-        public static final int sensitivityX=0x7f050005;
-        public static final int sensitivityY=0x7f050006;
-        public static final int tilt=0x7f05001c;
-        public static final int title_activity_pyng=0x7f050004;
-        public static final int txtBuiltBy=0x7f05000c;
-        public static final int txtFlo=0x7f05000e;
-        public static final int txtInteroberlin=0x7f05000d;
-        public static final int txtJulian=0x7f05000f;
-        public static final int txtMatthias=0x7f050010;
-        public static final int txtSendMail=0x7f050011;
-        public static final int txtVersion=0x7f050015;
-        public static final int txtX=0x7f050013;
-        public static final int txtY=0x7f050014;
-        public static final int url=0x7f050007;
+        public static final int app_name=0x7f060000;
+        public static final int ball=0x7f06001b;
+        public static final int btnCancel=0x7f060016;
+        public static final int btnGet=0x7f06000b;
+        public static final int btnPost=0x7f06000a;
+        public static final int btnRefresh=0x7f060019;
+        public static final int btnSave=0x7f060017;
+        public static final int cbAutoRefresh=0x7f06001a;
+        public static final int frequency=0x7f06001e;
+        public static final int get=0x7f060009;
+        public static final int logBuffer=0x7f060018;
+        public static final int menu_debug=0x7f060002;
+        public static final int menu_log=0x7f060012;
+        public static final int menu_settings=0x7f060001;
+        public static final int menu_support=0x7f060003;
+        public static final int orientation=0x7f06001d;
+        public static final int post=0x7f060008;
+        public static final int sensitivityX=0x7f060005;
+        public static final int sensitivityY=0x7f060006;
+        public static final int tilt=0x7f06001c;
+        public static final int title_activity_pyng=0x7f060004;
+        public static final int txtBuiltBy=0x7f06000c;
+        public static final int txtFlo=0x7f06000e;
+        public static final int txtInteroberlin=0x7f06000d;
+        public static final int txtJulian=0x7f06000f;
+        public static final int txtMatthias=0x7f060010;
+        public static final int txtSendMail=0x7f060011;
+        public static final int txtVersion=0x7f060015;
+        public static final int txtX=0x7f060013;
+        public static final int txtY=0x7f060014;
+        public static final int url=0x7f060007;
     }
     public static final class style {
         /** 
@@ -120,8 +126,8 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070002;
-        public static final int AppTheme=0x7f070000;
-        public static final int SplashTheme_FullScreen=0x7f070001;
+        public static final int AppBaseTheme=0x7f080002;
+        public static final int AppTheme=0x7f080000;
+        public static final int SplashTheme_FullScreen=0x7f080001;
     }
 }
