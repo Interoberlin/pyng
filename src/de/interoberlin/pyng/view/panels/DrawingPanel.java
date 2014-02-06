@@ -5,16 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import de.interoberlin.pyng.controller.activities.PyngController;
+import de.interoberlin.pyng.controller.PyngController;
+import de.interoberlin.pyng.model.objects.Ball;
+import de.interoberlin.pyng.model.objects.Panel;
 import de.interoberlin.pyng.model.settings.Properties;
 
 public class DrawingPanel extends SurfaceView implements Runnable
 {
-    public static boolean isRunning()
-    {
-	return running;
-    }
-
     Thread		 thread  = null;
     SurfaceHolder	  surfaceHolder;
     private static boolean running = false;
@@ -54,70 +51,63 @@ public class DrawingPanel extends SurfaceView implements Runnable
 	}
     }
 
+    public static boolean isRunning()
+    {
+	return running;
+    }
+
     @Override
     public void run()
     {
-	while (!running)
-	{
-
-	}
-
-	init();
-
 	while (running)
 	{
 	    if (surfaceHolder.getSurface().isValid())
 	    {
+		// Lock canvas
 		Canvas canvas = surfaceHolder.lockCanvas();
 
 		Properties.setCanvasHeight(canvas.getHeight());
 		Properties.setCanvasWidth(canvas.getWidth());
 
-		float ballX = PyngController.getBallPos().getX();
-		float ballY = PyngController.getBallPos().getY();
-		int ballRadius = Properties.getMinDimension() / 36;
-		int lineWidth = Properties.getMinDimension() / 126;
-
+		// Set colors
 		Paint white = new Paint();
 		Paint background = new Paint();
-		Paint orange = new Paint();
 
 		white.setARGB(255, 255, 255, 255);
-		orange.setARGB(255, 238, 118, 0);
 		background.setARGB(255, 0, 0, 0);
 
+		// Set dimensions
 		int w = Properties.getCanvasWidth();
 		int h = Properties.getCanvasHeight();
 
-		// Clear
+		// Clear canvas
 		canvas.drawRect(0, 0, w, h, background);
 
 		// Draw line
+		int lineWidth = Properties.getMinDimension() / 120;
 		canvas.drawRect(0, h / 2 - lineWidth, w, h / 2 + lineWidth, white);
 
-		// Draw Point
-		canvas.drawCircle(ballX, ballY, ballRadius, white);
+		// Draw ball
+		Ball b = PyngController.getBall();
+		if (b != null)
+		{
+		    float ballX = b.getPos().getX();
+		    float ballY = b.getPos().getY();
+		    int ballRadius = Properties.getMinDimension() / 30;
+		    canvas.drawCircle(ballX, ballY, ballRadius, white);
+		}
 
-		// Step
-		PyngController.step();
+		// Draw Panel
+		Panel p = PyngController.getPanel();
+		if (p != null)
+		{
+		    float panelWidth = Properties.getMinDimension() / 8;
+		    float panelHeight = Properties.getMinDimension() / 40;
+		    canvas.drawRect(p.getPos().getX() - panelWidth / 2, h - panelHeight, p.getPos().getX() + panelWidth / 2, h, white);
+		}
 
 		surfaceHolder.unlockCanvasAndPost(canvas);
 	    }
 	}
-    }
-
-    private void init()
-    {
-	if (surfaceHolder.getSurface().isValid())
-	{
-	    Canvas canvas = surfaceHolder.lockCanvas();
-
-	    Properties.setCanvasHeight(canvas.getHeight());
-	    Properties.setCanvasWidth(canvas.getWidth());
-
-	    surfaceHolder.unlockCanvasAndPost(canvas);
-	}
-	
-	PyngController.init();
     }
 }

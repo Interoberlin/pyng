@@ -17,29 +17,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.interoberlin.pyng.R;
+import de.interoberlin.pyng.controller.PyngController;
 import de.interoberlin.pyng.controller.Simulation;
-import de.interoberlin.pyng.controller.activities.PyngController;
 import de.interoberlin.pyng.model.settings.Settings;
 import de.interoberlin.pyng.view.panels.DrawingPanel;
 
 public class PyngActivity extends Activity
 {
-    private static Context       context;
-    private static Activity      activity;
+    private static Context	context;
+    private static Activity       activity;
+    private static PyngController controller;
 
-    private static SensorManager mSensorManager;
-    private WindowManager	mWindowManager;
-    private static Display       mDisplay;
+    private static SensorManager  mSensorManager;
+    private WindowManager	 mWindowManager;
+    private static Display	mDisplay;
 
-    private static DrawingPanel  srfc;
+    private static DrawingPanel   panel;
 
-    private static LinearLayout  lnr;
+    private static LinearLayout   lnr;
 
-    private static LinearLayout  oneLnr;
-    private static TextView      oneTvFirst;
-    private static TextView      oneTvSecond;
-    private static TextView      oneTvThird;
-    private static TextView      oneTvFourth;
+    private static LinearLayout   oneLnr;
+    private static TextView       oneTvFirst;
+    private static TextView       oneTvSecond;
+    private static TextView       oneTvThird;
+    private static TextView       oneTvFourth;
+
+    private static LinearLayout   twoLnr;
+    private static TextView       twoTvFirst;
+    private static TextView       twoTvSecond;
+    private static TextView       twoTvThird;
+    private static TextView       twoTvFourth;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -59,36 +66,38 @@ public class PyngActivity extends Activity
 	mDisplay = mWindowManager.getDefaultDisplay();
 
 	// Add surface view
-	srfc = new DrawingPanel(activity);
-	activity.addContentView(srfc, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+	panel = new DrawingPanel(activity);
+	activity.addContentView(panel, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 	// Add linear layout
 	lnr = new LinearLayout(activity);
 	activity.addContentView(lnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
-	// Start the simulation
-	Simulation.getInstance(activity).start();
+	// Get controller
+	controller = (PyngController) getApplicationContext();
     }
 
     public void onResume()
     {
 	super.onResume();
-	srfc.onResume();
+	panel.onResume();
+
+	// controller.start(activity);
 
 	draw();
 
-	srfc.setOnTouchListener(new OnTouchListener()
+	panel.setOnTouchListener(new OnTouchListener()
 	{
 
 	    @Override
 	    public boolean onTouch(View v, MotionEvent event)
 	    {
-		if (DrawingPanel.isRunning())
+		if (!controller.isGameRunning())
 		{
-		    srfc.onPause();
+		    controller.start(activity);
 		} else
 		{
-		    srfc.onResume();
+		    controller.stop(activity);
 		}
 
 		return false;
@@ -100,7 +109,8 @@ public class PyngActivity extends Activity
     protected void onPause()
     {
 	super.onPause();
-	srfc.onPause();
+	panel.onPause();
+	// controller.stop(activity);
     }
 
     @Override
@@ -179,17 +189,39 @@ public class PyngActivity extends Activity
 	    oneTvSecond = new TextView(activity);
 	    oneTvThird = new TextView(activity);
 	    oneTvFourth = new TextView(activity);
-	    oneTvFirst.setText(R.string.ball);
-	    oneTvSecond.setText(String.valueOf(PyngController.getBallPos().getX()));
-	    oneTvThird.setText(String.valueOf(PyngController.getBallPos().getY()));
-	    oneTvFourth.setText(String.valueOf(PyngController.getBallDirection()));
+
+	    twoLnr = new LinearLayout(activity);
+	    twoTvFirst = new TextView(activity);
+	    twoTvSecond = new TextView(activity);
+	    twoTvThird = new TextView(activity);
+	    twoTvFourth = new TextView(activity);
+
+	    if (PyngController.getBall() != null)
+	    {
+		oneTvFirst.setText(R.string.ball);
+		oneTvSecond.setText(String.valueOf(PyngController.getBall().getPos().getX()));
+		oneTvThird.setText(String.valueOf(PyngController.getBall().getPos().getY()));
+		oneTvFourth.setText(String.valueOf(PyngController.getBall().getDirection()));
+	    }
+
+	    twoTvFirst.setText(R.string.tilt);
+	    twoTvSecond.setText(String.valueOf(Simulation.getRawX()));
+	    twoTvThird.setText(String.valueOf(Simulation.getRawY()));
+	    twoTvFourth.setText("");
+
 	    oneLnr.addView(oneTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    oneLnr.addView(oneTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    oneLnr.addView(oneTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    oneLnr.addView(oneTvFourth, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 
+	    twoLnr.addView(twoTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    twoLnr.addView(twoTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    twoLnr.addView(twoTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    twoLnr.addView(twoTvFourth, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+
 	    lnr.setOrientation(1);
 	    lnr.addView(oneLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	    lnr.addView(twoLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
     }
 

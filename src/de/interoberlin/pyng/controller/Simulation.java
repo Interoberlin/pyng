@@ -71,14 +71,12 @@ public class Simulation implements Observer
     {
 	Log.info("Simulation started");
 	Accelerometer.getInstance(activity).start();
-	// BroadcastThread.getInstance().start();
     }
 
     public void stop()
     {
 	Log.info("Simulation stopped");
 	Accelerometer.getInstance(activity).stop();
-	// BroadcastThread.getInstance().stop();
     }
 
     private float normalize(float f, float sensibility)

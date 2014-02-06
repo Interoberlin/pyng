@@ -14,11 +14,12 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int blue=0x7f040003;
-        public static final int green=0x7f040002;
-        public static final int red=0x7f040004;
-        public static final int white=0x7f040000;
-        public static final int yellow=0x7f040001;
+        public static final int black=0x7f040000;
+        public static final int blue=0x7f040004;
+        public static final int green=0x7f040003;
+        public static final int red=0x7f040005;
+        public static final int white=0x7f040001;
+        public static final int yellow=0x7f040002;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
@@ -82,17 +83,18 @@ public final class R {
         public static final int btnRefresh=0x7f050019;
         public static final int btnSave=0x7f050017;
         public static final int cbAutoRefresh=0x7f05001a;
-        public static final int frequency=0x7f05001d;
+        public static final int frequency=0x7f05001e;
         public static final int get=0x7f050009;
         public static final int logBuffer=0x7f050018;
         public static final int menu_debug=0x7f050002;
         public static final int menu_log=0x7f050012;
         public static final int menu_settings=0x7f050001;
         public static final int menu_support=0x7f050003;
-        public static final int orientation=0x7f05001c;
+        public static final int orientation=0x7f05001d;
         public static final int post=0x7f050008;
         public static final int sensitivityX=0x7f050005;
         public static final int sensitivityY=0x7f050006;
+        public static final int tilt=0x7f05001c;
         public static final int title_activity_pyng=0x7f050004;
         public static final int txtBuiltBy=0x7f05000c;
         public static final int txtFlo=0x7f05000e;
