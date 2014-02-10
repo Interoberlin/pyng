@@ -1,17 +1,15 @@
-package de.interoberlin.pyng.controller;
+package de.interoberlin.pyng.controller.accelerometer;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
-import de.interoberlin.pyng.controller.accelerometer.AccelerationEvent;
-import de.interoberlin.pyng.controller.accelerometer.Accelerometer;
 import de.interoberlin.pyng.controller.log.Log;
 import de.interoberlin.pyng.model.settings.Settings;
 
-public class Simulation implements Observer
+public class AcceleratorListener implements Observer
 {
-    private static Simulation  instance;
+    private static AcceleratorListener  instance;
 
     private static final float MAX_VALUE  = Settings.getMaxValue();
     private static final float MIN_VALUE  = Settings.getMinValue();
@@ -33,16 +31,16 @@ public class Simulation implements Observer
 
     private Activity	   activity;
 
-    private Simulation(Activity activity)
+    private AcceleratorListener(Activity activity)
     {
 	this.activity = activity;
     }
 
-    public static Simulation getInstance(Activity activity)
+    public static AcceleratorListener getInstance(Activity activity)
     {
 	if (instance == null)
 	{
-	    instance = new Simulation(activity);
+	    instance = new AcceleratorListener(activity);
 	}
 
 	return instance;
@@ -102,7 +100,7 @@ public class Simulation implements Observer
 
     public static void setX(int x)
     {
-	Simulation.x = x;
+	AcceleratorListener.x = x;
     }
 
     public static int getY()
@@ -112,7 +110,7 @@ public class Simulation implements Observer
 
     public static void setY(int y)
     {
-	Simulation.y = y;
+	AcceleratorListener.y = y;
     }
 
     public static float getDataX()

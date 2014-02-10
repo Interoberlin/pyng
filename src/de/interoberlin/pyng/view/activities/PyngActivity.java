@@ -18,7 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.interoberlin.pyng.R;
 import de.interoberlin.pyng.controller.PyngController;
-import de.interoberlin.pyng.controller.Simulation;
+import de.interoberlin.pyng.controller.accelerometer.AcceleratorListener;
+import de.interoberlin.pyng.controller.game.Round;
 import de.interoberlin.pyng.model.settings.Settings;
 import de.interoberlin.pyng.view.panels.DrawingPanel;
 
@@ -47,6 +48,12 @@ public class PyngActivity extends Activity
     private static TextView       twoTvSecond;
     private static TextView       twoTvThird;
     private static TextView       twoTvFourth;
+
+    private static LinearLayout   threeLnr;
+    private static TextView       threeTvFirst;
+    private static TextView       threeTvSecond;
+    private static TextView       threeTvThird;
+    private static TextView       threeTvFourth;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -97,7 +104,13 @@ public class PyngActivity extends Activity
 		    controller.start(activity);
 		} else
 		{
-		    controller.stop(activity);
+		    if (controller.isRoundPaused())
+		    {
+			controller.resume(activity);
+		    } else
+		    {
+			controller.pause(activity);
+		    }
 		}
 
 		return false;
@@ -119,7 +132,7 @@ public class PyngActivity extends Activity
 	super.onDestroy();
 
 	// Stop the simulartion
-	Simulation.getInstance(activity).stop();
+	AcceleratorListener.getInstance(activity).stop();
     }
 
     @Override
@@ -196,6 +209,12 @@ public class PyngActivity extends Activity
 	    twoTvThird = new TextView(activity);
 	    twoTvFourth = new TextView(activity);
 
+	    threeLnr = new LinearLayout(activity);
+	    threeTvFirst = new TextView(activity);
+	    threeTvSecond = new TextView(activity);
+	    threeTvThird = new TextView(activity);
+	    threeTvFourth = new TextView(activity);
+
 	    if (PyngController.getBall() != null)
 	    {
 		oneTvFirst.setText(R.string.ball);
@@ -205,9 +224,14 @@ public class PyngActivity extends Activity
 	    }
 
 	    twoTvFirst.setText(R.string.tilt);
-	    twoTvSecond.setText(String.valueOf(Simulation.getRawX()));
-	    twoTvThird.setText(String.valueOf(Simulation.getRawY()));
+	    twoTvSecond.setText(String.valueOf(AcceleratorListener.getRawX()));
+	    twoTvThird.setText(String.valueOf(AcceleratorListener.getRawY()));
 	    twoTvFourth.setText("");
+
+	    threeTvFirst.setText(R.string.points);
+	    threeTvSecond.setText(String.valueOf(Round.getInstance().getPoints()));
+	    threeTvThird.setText("");
+	    threeTvFourth.setText("");
 
 	    oneLnr.addView(oneTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    oneLnr.addView(oneTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
@@ -219,9 +243,15 @@ public class PyngActivity extends Activity
 	    twoLnr.addView(twoTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    twoLnr.addView(twoTvFourth, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 
+	    threeLnr.addView(threeTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    threeLnr.addView(threeTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    threeLnr.addView(threeTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    threeLnr.addView(threeTvFourth, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+
 	    lnr.setOrientation(1);
 	    lnr.addView(oneLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	    lnr.addView(twoLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	    lnr.addView(threeLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
     }
 

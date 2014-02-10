@@ -75,7 +75,17 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		Paint background = new Paint();
 
 		white.setARGB(255, 255, 255, 255);
-		background.setARGB(255, 0, 0, 0);
+
+		if (PyngController.isButtonU())
+		{
+		    background.setARGB(255, 0, 0, 255);
+		} else if (PyngController.isButtonO())
+		{
+		    background.setARGB(255, 0, 255, 0);
+		} else
+		{
+		    background.setARGB(255, 0, 0, 0);
+		}
 
 		// Set dimensions
 		int w = Properties.getCanvasWidth();

@@ -8,7 +8,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.view.Surface;
-import de.interoberlin.pyng.controller.Simulation;
 import de.interoberlin.pyng.controller.log.Log;
 import de.interoberlin.pyng.view.activities.PyngActivity;
 
@@ -27,7 +26,7 @@ public class Accelerometer extends Observable implements SensorEventListener
 	accelerometer = ((PyngActivity) activity).getSensorManager().getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 	this.activity = activity;
 
-	addObserver(Simulation.getInstance(activity));
+	addObserver(AcceleratorListener.getInstance(activity));
     }
 
     public static Accelerometer getInstance(Activity activity)

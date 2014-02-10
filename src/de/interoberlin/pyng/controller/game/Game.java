@@ -1,6 +1,5 @@
 package de.interoberlin.pyng.controller.game;
 
-import de.interoberlin.pyng.controller.PyngController;
 import de.interoberlin.pyng.view.activities.PyngActivity;
 
 public class Game implements Runnable
@@ -26,6 +25,8 @@ public class Game implements Runnable
 
     public void start()
     {
+	System.out.println("Interoberlin Game start");
+	
 	PyngActivity.uiToast("Game started");
 	running = true;
 	thread = new Thread(this);
@@ -34,6 +35,8 @@ public class Game implements Runnable
 
     public void stop()
     {
+	System.out.println("Interoberlin Game stop");
+	
 	PyngActivity.uiToast("Game stopped");
 	boolean retry = true;
 	running = false;
@@ -61,16 +64,28 @@ public class Game implements Runnable
     {
 	while (running)
 	{
-	    try
+	    if (!Round.getInstance().isRunning())
 	    {
-		Thread.sleep(10);
-	    } catch (InterruptedException e)
-	    {
-		e.printStackTrace();
-	    }
+		try
+		{
+		    Thread.sleep(1000);
+		} catch (InterruptedException e)
+		{
+		    e.printStackTrace();
+		}
+		
+		Round.getInstance().init();
+		
+		try
+		{
+		    Thread.sleep(1000);
+		} catch (InterruptedException e)
+		{
+		    e.printStackTrace();
+		}
 
-	    PyngController.step();
-	    PyngController.setPanelPos();
+		Round.getInstance().start();
+	    }
 	}
     }
 }

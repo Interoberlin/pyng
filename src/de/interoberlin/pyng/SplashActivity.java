@@ -3,9 +3,11 @@
  */
 package de.interoberlin.pyng;
 
+import tv.ouya.console.api.OuyaController;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import de.interoberlin.pyng.controller.PyngController;
 import de.interoberlin.pyng.view.activities.PyngActivity;
 
 public class SplashActivity extends Activity
@@ -17,6 +19,8 @@ public class SplashActivity extends Activity
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_splash);
 
+	OuyaController.init(PyngController.getContext());
+	
 	Thread timer = new Thread()
 	{
 	    public void run()
