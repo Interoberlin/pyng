@@ -5,5 +5,9 @@
     <dimen name="panelWidth">40dp</dimen>
     <dimen name="panelHeight">8dp</dimen>
     <dimen name="lineWidth">3dp</dimen>
+    
+    <dimen name="numberLine">5dp</dimen>
+    <dimen name="numberWidth">40dp</dimen>
+    <dimen name="numberHeight">80dp</dimen>
 
 </resources>

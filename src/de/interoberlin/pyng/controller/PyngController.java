@@ -4,29 +4,45 @@ import tv.ouya.console.api.OuyaController;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import de.interoberlin.pyng.controller.accelerometer.AcceleratorListener;
 import de.interoberlin.pyng.controller.game.Game;
 import de.interoberlin.pyng.controller.game.Round;
-import de.interoberlin.pyng.controller.log.Log;
 import de.interoberlin.pyng.model.geometry.RandomNumber;
 import de.interoberlin.pyng.model.geometry.Vector2;
 import de.interoberlin.pyng.model.objects.Ball;
 import de.interoberlin.pyng.model.objects.Panel;
 import de.interoberlin.pyng.model.settings.Properties;
+import de.interoberlin.pyng.model.sound.ESound;
+import de.interoberlin.pyng.view.activities.PyngActivity;
 
 public class PyngController extends Application
 {
 
-    private static Ball    ball;
-    private static Panel   panel;
-    private static boolean initialized = false;
+    private static Ball	       ball;
+    private static Panel	      panel;
+    private static boolean	    initialized = false;
 
-    private static boolean buttonO     = false;
-    private static boolean buttonU     = false;
-    private static boolean buttonY     = false;
-    private static boolean buttonA     = false;
+    private static SparseBooleanArray buttons;
 
-    private static Context context;
+    static
+    {
+	buttons = new SparseBooleanArray();
+	buttons.append(OuyaController.BUTTON_O, false);
+	buttons.append(OuyaController.BUTTON_U, false);
+	buttons.append(OuyaController.BUTTON_Y, false);
+	buttons.append(OuyaController.BUTTON_A, false);
+
+	buttons.append(OuyaController.BUTTON_DPAD_DOWN, false);
+	buttons.append(OuyaController.BUTTON_DPAD_LEFT, false);
+	buttons.append(OuyaController.BUTTON_DPAD_UP, false);
+	buttons.append(OuyaController.BUTTON_DPAD_RIGHT, false);
+
+	buttons.append(OuyaController.BUTTON_R1, false);
+	buttons.append(OuyaController.BUTTON_L1, false);
+    }
+
+    private static Context	    context;
 
     @Override
     public void onCreate()
@@ -119,19 +135,21 @@ public class PyngController extends Application
 	// Check top border
 	if (ball.getPos().getY() <= ball.getRadius())
 	{
+	    PyngActivity.playSound(ESound.BONG);
 	    ball.setDirection((ball.getDirection() - 180) * -1);
 	}
 
 	// Check left and right border
 	if ((ball.getPos().getX() <= ball.getRadius()) || (ball.getPos().getX() >= w - ball.getRadius()))
 	{
+	    PyngActivity.playSound(ESound.BONG);
 	    ball.setDirection(360 - ball.getDirection());
 	}
 
 	// Check bottom border
 	if (ball.getPos().getY() >= h - ball.getRadius())
 	{
-	    // Game.getInstance().stop();
+	    PyngActivity.playSound(ESound.GAME_OVER);
 	    Round.getInstance().stop();
 	}
 
@@ -153,6 +171,7 @@ public class PyngController extends Application
 	    // ball.setDirection((ball.getDirection() - 180) * -1);
 	    ball.setSpeed(ball.getSpeed() + 0.005f);
 	    Round.getInstance().incrementPoints();
+	    PyngActivity.playSound(ESound.BING);
 	}
 
 	// Normalize direction
@@ -185,52 +204,13 @@ public class PyngController extends Application
 
     }
 
-    public static void readOuyaButton()
+    public static void indicateKey(int keyCode, boolean pressed)
     {
-	if (OuyaController.getControllerByDeviceId(0) != null)
-	{
-	    Log.debug("Controller found");
-
-	    if (OuyaController.getControllerByDeviceId(0).buttonPressedThisFrame(OuyaController.BUTTON_O))
-	    {
-		Log.debug("Button O");
-		buttonO = true;
-	    }
-	    if (OuyaController.getControllerByDeviceId(0).buttonPressedThisFrame(OuyaController.BUTTON_U))
-	    {
-		Log.debug("Button U");
-		buttonU = true;
-	    }
-	    if (OuyaController.getControllerByDeviceId(0).buttonPressedThisFrame(OuyaController.BUTTON_Y))
-	    {
-		Log.debug("Button Y");
-		buttonY = true;
-	    }
-	    if (OuyaController.getControllerByDeviceId(0).buttonPressedThisFrame(OuyaController.BUTTON_A))
-	    {
-		Log.debug("Button A");
-		buttonA = true;
-	    }
-	}
+	buttons.put(keyCode, pressed);
     }
 
-    public static boolean isButtonO()
+    public static boolean isKeyPressed(int keyCode)
     {
-	return buttonO;
-    }
-
-    public static boolean isButtonU()
-    {
-	return buttonU;
-    }
-
-    public static boolean isButtonY()
-    {
-	return buttonY;
-    }
-
-    public static boolean isButtonA()
-    {
-	return buttonA;
+	return buttons.get(keyCode, false);
     }
 }

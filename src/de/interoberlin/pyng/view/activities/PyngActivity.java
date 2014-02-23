@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.media.SoundPool.OnLoadCompleteListener;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -20,7 +24,9 @@ import de.interoberlin.pyng.R;
 import de.interoberlin.pyng.controller.PyngController;
 import de.interoberlin.pyng.controller.accelerometer.AcceleratorListener;
 import de.interoberlin.pyng.controller.game.Round;
+import de.interoberlin.pyng.controller.log.Log;
 import de.interoberlin.pyng.model.settings.Settings;
+import de.interoberlin.pyng.model.sound.ESound;
 import de.interoberlin.pyng.view.panels.DrawingPanel;
 
 public class PyngActivity extends Activity
@@ -55,6 +61,12 @@ public class PyngActivity extends Activity
     private static TextView       threeTvThird;
     private static TextView       threeTvFourth;
 
+    private static SoundPool      soundPool;
+    private static int	    soundBing;
+    private static int	    soundBong;
+    private static int	    soundGameOver;
+    private static boolean	loaded = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -79,6 +91,22 @@ public class PyngActivity extends Activity
 	// Add linear layout
 	lnr = new LinearLayout(activity);
 	activity.addContentView(lnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
+	// Set the hardware buttons to control the music
+	this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+	// Load the sound
+	soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+	soundPool.setOnLoadCompleteListener(new OnLoadCompleteListener()
+	{
+	    @Override
+	    public void onLoadComplete(SoundPool soundPool, int sampleId, int status)
+	    {
+		loaded = true;
+	    }
+	});
+	soundBing = soundPool.load(this, R.raw.bing, 1);
+	soundBong = soundPool.load(this, R.raw.bong, 1);
+	soundGameOver = soundPool.load(this, R.raw.gameover, 1);
 
 	// Get controller
 	controller = (PyngController) getApplicationContext();
@@ -123,16 +151,15 @@ public class PyngActivity extends Activity
     {
 	super.onPause();
 	panel.onPause();
-	// controller.stop(activity);
+
+	controller.stop(activity);
+	AcceleratorListener.getInstance(activity).stop();
     }
 
     @Override
     protected void onDestroy()
     {
 	super.onDestroy();
-
-	// Stop the simulartion
-	AcceleratorListener.getInstance(activity).stop();
     }
 
     @Override
@@ -253,6 +280,59 @@ public class PyngActivity extends Activity
 	    lnr.addView(twoLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	    lnr.addView(threeLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+	PyngController.indicateKey(keyCode, true);
+	return true;
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+	PyngController.indicateKey(keyCode, false);
+	return true;
+    }
+
+    public static boolean playSound(ESound sound)
+    {
+	// Getting the user sound settings
+	AudioManager audioManager = (AudioManager) PyngController.getContext().getSystemService(AUDIO_SERVICE);
+	float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+	float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+	float volume = actualVolume / maxVolume;
+
+	// Is the sound loaded already?
+	if (loaded)
+	{
+	    switch (sound)
+	    {
+		case BING:
+		{
+		    soundPool.play(soundBing, volume, volume, 1, 0, 1f);
+		    Log.trace("Played sound " + sound.toString());
+		    break;
+		}
+		case BONG:
+		{
+		    soundPool.play(soundBong, volume, volume, 1, 0, 1f);
+		    Log.trace("Played sound " + sound.toString());
+		    break;
+		}
+		case GAME_OVER:
+		{
+		    soundPool.play(soundGameOver, volume, volume, 1, 0, 1f);
+		    Log.trace("Played sound " + sound.toString());
+		    break;
+		}
+		default:
+		    break;
+	    }
+	}
+
+	return false;
     }
 
     public SensorManager getSensorManager()

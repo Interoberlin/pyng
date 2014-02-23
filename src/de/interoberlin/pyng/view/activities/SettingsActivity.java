@@ -169,11 +169,11 @@ public class SettingsActivity extends Activity
     {
 	switch (item.getItemId())
 	{
-	    case android.R.id.home:
-	    {
-		finish();
-		break;
-	    }
+//	    case android.R.id.home:
+//	    {
+//		finish();
+//		break;
+//	    }
 	    case R.id.menu_debug:
 	    {
 		if (Settings.isDebug())

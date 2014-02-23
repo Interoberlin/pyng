@@ -5,17 +5,18 @@ import de.interoberlin.pyng.view.activities.PyngActivity;
 
 public class Round implements Runnable
 {
-    private static Round round;
+    private static Round     round;
 
-    private Thread       thread  = null;
-    private boolean      running = false;
-    private boolean      paused  = false;
+    private Thread	   thread      = null;
+    private boolean	  running     = false;
+    private boolean	  paused      = false;
 
-    private int	  points  = 0;
+    private int	      points;
+    private static final int INIT_POINTS = 0;
 
     private Round()
     {
-	setPoints(0);
+	setPoints(INIT_POINTS);
     }
 
     public static Round getInstance()
@@ -30,7 +31,7 @@ public class Round implements Runnable
 
     public void init()
     {
-	points = 0;
+	setPoints(INIT_POINTS);
 	PyngController.init();
     }
 
@@ -104,7 +105,6 @@ public class Round implements Runnable
 
 		PyngController.step();
 		PyngController.setPanelPos();
-		PyngController.readOuyaButton();
 	    }
 	}
     }

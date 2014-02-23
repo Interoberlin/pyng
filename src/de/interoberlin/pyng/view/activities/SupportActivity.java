@@ -71,11 +71,11 @@ public class SupportActivity extends Activity
 	{
 		switch (item.getItemId())
 		{
-			case android.R.id.home:
-			{
-				finish();
-				break;
-			}
+//			case android.R.id.home:
+//			{
+//				finish();
+//				break;
+//			}
 		}
 		return true;
 	}
