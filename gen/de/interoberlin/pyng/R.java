@@ -9,64 +9,68 @@ package de.interoberlin.pyng;
 
 public final class R {
     public static final class array {
-        public static final int loglevel=0x7f070000;
+        public static final int loglevel=0x7f080000;
     }
     public static final class attr {
     }
     public static final class color {
-        public static final int black=0x7f040000;
-        public static final int blue=0x7f040004;
-        public static final int green=0x7f040003;
-        public static final int red=0x7f040005;
-        public static final int white=0x7f040001;
-        public static final int yellow=0x7f040002;
+        public static final int black=0x7f050000;
+        public static final int blue=0x7f050004;
+        public static final int green=0x7f050003;
+        public static final int red=0x7f050005;
+        public static final int white=0x7f050001;
+        public static final int yellow=0x7f050002;
     }
     public static final class dimen {
-        public static final int ballRadius=0x7f050000;
-        public static final int lineWidth=0x7f050003;
-        public static final int panelHeight=0x7f050002;
-        public static final int panelWidth=0x7f050001;
+        public static final int ballRadius=0x7f060000;
+        public static final int lineWidth=0x7f060003;
+        public static final int numberDistance=0x7f060004;
+        public static final int numberHeight=0x7f060007;
+        public static final int numberLine=0x7f060005;
+        public static final int numberWidth=0x7f060006;
+        public static final int panelHeight=0x7f060002;
+        public static final int panelWidth=0x7f060001;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int splash=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f0a0009;
-        public static final int btnCancel=0x7f0a0016;
-        public static final int btnSave=0x7f0a0017;
-        public static final int btnSendMail=0x7f0a001e;
-        public static final int cbAutoRefresh=0x7f0a0007;
-        public static final int cbGet=0x7f0a0015;
-        public static final int cbPost=0x7f0a0014;
-        public static final int etFrequency=0x7f0a0013;
-        public static final int etLogBuffer=0x7f0a000b;
-        public static final int etURL=0x7f0a0011;
-        public static final int linearLayout1=0x7f0a0001;
-        public static final int menu_debug=0x7f0a001f;
-        public static final int menu_log=0x7f0a0021;
-        public static final int menu_settings=0x7f0a0020;
-        public static final int menu_support=0x7f0a0022;
-        public static final int sbSensitivityX=0x7f0a000d;
-        public static final int sbSensitivityY=0x7f0a000f;
-        public static final int scrl=0x7f0a0000;
-        public static final int spnnrLogLevel=0x7f0a0008;
-        public static final int tableRow1=0x7f0a0003;
-        public static final int tableRow2=0x7f0a0004;
-        public static final int tableRow3=0x7f0a0005;
-        public static final int tableRow4=0x7f0a0006;
-        public static final int tbl=0x7f0a0002;
-        public static final int textView1=0x7f0a0019;
-        public static final int textViewBuildBy=0x7f0a0018;
-        public static final int textViewFlo=0x7f0a001a;
-        public static final int textViewJulian=0x7f0a001b;
-        public static final int textViewMatthias=0x7f0a001c;
-        public static final int textViewVersion=0x7f0a001d;
-        public static final int tvFrequency=0x7f0a0012;
-        public static final int tvLogBuffer=0x7f0a000a;
-        public static final int tvSensitivityX=0x7f0a000c;
-        public static final int tvSensitivityY=0x7f0a000e;
-        public static final int tvUrl=0x7f0a0010;
+        public static final int LinearLayout1=0x7f0b0009;
+        public static final int btnCancel=0x7f0b0016;
+        public static final int btnSave=0x7f0b0017;
+        public static final int btnSendMail=0x7f0b001e;
+        public static final int cbAutoRefresh=0x7f0b0007;
+        public static final int cbGet=0x7f0b0015;
+        public static final int cbPost=0x7f0b0014;
+        public static final int etFrequency=0x7f0b0013;
+        public static final int etLogBuffer=0x7f0b000b;
+        public static final int etURL=0x7f0b0011;
+        public static final int linearLayout1=0x7f0b0001;
+        public static final int menu_debug=0x7f0b001f;
+        public static final int menu_log=0x7f0b0021;
+        public static final int menu_settings=0x7f0b0020;
+        public static final int menu_support=0x7f0b0022;
+        public static final int sbSensitivityX=0x7f0b000d;
+        public static final int sbSensitivityY=0x7f0b000f;
+        public static final int scrl=0x7f0b0000;
+        public static final int spnnrLogLevel=0x7f0b0008;
+        public static final int tableRow1=0x7f0b0003;
+        public static final int tableRow2=0x7f0b0004;
+        public static final int tableRow3=0x7f0b0005;
+        public static final int tableRow4=0x7f0b0006;
+        public static final int tbl=0x7f0b0002;
+        public static final int textView1=0x7f0b0019;
+        public static final int textViewBuildBy=0x7f0b0018;
+        public static final int textViewFlo=0x7f0b001a;
+        public static final int textViewJulian=0x7f0b001b;
+        public static final int textViewMatthias=0x7f0b001c;
+        public static final int textViewVersion=0x7f0b001d;
+        public static final int tvFrequency=0x7f0b0012;
+        public static final int tvLogBuffer=0x7f0b000a;
+        public static final int tvSensitivityX=0x7f0b000c;
+        public static final int tvSensitivityY=0x7f0b000e;
+        public static final int tvUrl=0x7f0b0010;
     }
     public static final class layout {
         public static final int activity_log=0x7f030000;
@@ -76,42 +80,48 @@ public final class R {
         public static final int activity_support=0x7f030004;
     }
     public static final class menu {
-        public static final int activity_basic=0x7f090000;
-        public static final int activity_log=0x7f090001;
-        public static final int activity_main=0x7f090002;
+        public static final int activity_basic=0x7f0a0000;
+        public static final int activity_log=0x7f0a0001;
+        public static final int activity_main=0x7f0a0002;
+    }
+    public static final class raw {
+        public static final int bing=0x7f040000;
+        public static final int bong=0x7f040001;
+        public static final int gameover=0x7f040002;
     }
     public static final class string {
-        public static final int app_name=0x7f060000;
-        public static final int ball=0x7f06001b;
-        public static final int btnCancel=0x7f060016;
-        public static final int btnGet=0x7f06000b;
-        public static final int btnPost=0x7f06000a;
-        public static final int btnRefresh=0x7f060019;
-        public static final int btnSave=0x7f060017;
-        public static final int cbAutoRefresh=0x7f06001a;
-        public static final int frequency=0x7f06001e;
-        public static final int get=0x7f060009;
-        public static final int logBuffer=0x7f060018;
-        public static final int menu_debug=0x7f060002;
-        public static final int menu_log=0x7f060012;
-        public static final int menu_settings=0x7f060001;
-        public static final int menu_support=0x7f060003;
-        public static final int orientation=0x7f06001d;
-        public static final int post=0x7f060008;
-        public static final int sensitivityX=0x7f060005;
-        public static final int sensitivityY=0x7f060006;
-        public static final int tilt=0x7f06001c;
-        public static final int title_activity_pyng=0x7f060004;
-        public static final int txtBuiltBy=0x7f06000c;
-        public static final int txtFlo=0x7f06000e;
-        public static final int txtInteroberlin=0x7f06000d;
-        public static final int txtJulian=0x7f06000f;
-        public static final int txtMatthias=0x7f060010;
-        public static final int txtSendMail=0x7f060011;
-        public static final int txtVersion=0x7f060015;
-        public static final int txtX=0x7f060013;
-        public static final int txtY=0x7f060014;
-        public static final int url=0x7f060007;
+        public static final int app_name=0x7f070000;
+        public static final int ball=0x7f07001b;
+        public static final int btnCancel=0x7f070016;
+        public static final int btnGet=0x7f07000b;
+        public static final int btnPost=0x7f07000a;
+        public static final int btnRefresh=0x7f070019;
+        public static final int btnSave=0x7f070017;
+        public static final int cbAutoRefresh=0x7f07001a;
+        public static final int frequency=0x7f07001f;
+        public static final int get=0x7f070009;
+        public static final int logBuffer=0x7f070018;
+        public static final int menu_debug=0x7f070002;
+        public static final int menu_log=0x7f070012;
+        public static final int menu_settings=0x7f070001;
+        public static final int menu_support=0x7f070003;
+        public static final int orientation=0x7f07001e;
+        public static final int points=0x7f07001d;
+        public static final int post=0x7f070008;
+        public static final int sensitivityX=0x7f070005;
+        public static final int sensitivityY=0x7f070006;
+        public static final int tilt=0x7f07001c;
+        public static final int title_activity_pyng=0x7f070004;
+        public static final int txtBuiltBy=0x7f07000c;
+        public static final int txtFlo=0x7f07000e;
+        public static final int txtInteroberlin=0x7f07000d;
+        public static final int txtJulian=0x7f07000f;
+        public static final int txtMatthias=0x7f070010;
+        public static final int txtSendMail=0x7f070011;
+        public static final int txtVersion=0x7f070015;
+        public static final int txtX=0x7f070013;
+        public static final int txtY=0x7f070014;
+        public static final int url=0x7f070007;
     }
     public static final class style {
         /** 
@@ -126,8 +136,8 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080002;
-        public static final int AppTheme=0x7f080000;
-        public static final int SplashTheme_FullScreen=0x7f080001;
+        public static final int AppBaseTheme=0x7f090002;
+        public static final int AppTheme=0x7f090000;
+        public static final int SplashTheme_FullScreen=0x7f090001;
     }
 }

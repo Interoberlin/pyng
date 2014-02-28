@@ -12,7 +12,7 @@ public class Round implements Runnable
     private boolean	  paused      = false;
 
     private int	      points;
-    private static final int INIT_POINTS = 0;
+    private static final int INIT_POINTS = 109;
 
     private Round()
     {

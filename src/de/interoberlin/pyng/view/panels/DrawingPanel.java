@@ -26,9 +26,10 @@ public class DrawingPanel extends SurfaceView implements Runnable
     private static Context   c;
     private static Resources r;
 
-    private static int       w;
-    private static int       h;
-    private static int       l;
+    private static int       numberDistance;
+    private static int       numberWidth;
+    private static int       numberHeight;
+    private static int       numberLine;
 
     public DrawingPanel(Context context)
     {
@@ -38,10 +39,10 @@ public class DrawingPanel extends SurfaceView implements Runnable
 	c = (Context) PyngController.getContext();
 	r = c.getResources();
 
-	w = (int) r.getDimension(R.dimen.numberWidth);
-	h = (int) r.getDimension(R.dimen.numberHeight);
-	l = (int) r.getDimension(R.dimen.numberLine);
-
+	numberDistance = (int) r.getDimension(R.dimen.numberDistance);
+	numberWidth = (int) r.getDimension(R.dimen.numberWidth);
+	numberHeight = (int) r.getDimension(R.dimen.numberHeight);
+	numberLine = (int) r.getDimension(R.dimen.numberLine);
     }
 
     public void onChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3)
@@ -109,57 +110,87 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		}
 
 		// Set dimensions
-		int width = Properties.getCanvasWidth();
+		int canvasWidth = Properties.getCanvasWidth();
 		int height = Properties.getCanvasHeight();
 
 		// Clear canvas
-		canvas.drawRect(0, 0, width, height, background);
+		canvas.drawRect(0, 0, canvasWidth, height, background);
 
 		int score = Round.getInstance().getPoints();
 
 		// Draw score
-		int digitOne = score % 10;
-		int digitTwo = score / 10;
-//		int digitThree = score / 100;
-		
+		int digitOne = getNthDigit(score, 10, 1);
+		int digitTwo = getNthDigit(score, 10, 2);
+		int digitThree = getNthDigit(score, 10, 3);
+
 		if (score < 10)
 		{
-		    int offsetX = (width - w) / 2;
-		    int offsetY = h;
-		    
+		    int offsetX = (canvasWidth - numberWidth) / 2;
+		    int offsetY = numberHeight;
+
 		    ENumber number = getNumberByInt(digitOne);
 
 		    for (ESegment s : number.getSegmentList())
 		    {
 			canvas.drawRect(s.getLeft() + offsetX, s.getTop() + offsetY, s.getRight() + offsetX, s.getBottom() + offsetY, white);
 		    }
-		}
-		else if (score < 100)
+		} else if (score < 100)
 		{
-		    int offsetOneX = (int) (width + (1.5f * w)) / 2;
-		    int offsetOneY = h;
-		    
+		    int offsetOneX = (int) ((canvasWidth + numberDistance) / 2);
+		    int offsetOneY = numberHeight;
+
 		    ENumber numberOne = getNumberByInt(digitOne);
 
 		    for (ESegment s : numberOne.getSegmentList())
 		    {
 			canvas.drawRect(s.getLeft() + offsetOneX, s.getTop() + offsetOneY, s.getRight() + offsetOneX, s.getBottom() + offsetOneY, white);
 		    }
-		    
-		    int offsetTwoX = (int) (width - (1.5f * w)) / 2;
-		    int offsetTwoY = h;
-		    
+
+		    int offsetTwoX = (int) ((canvasWidth - numberDistance) / 2 - numberWidth);
+		    int offsetTwoY = numberHeight;
+
 		    ENumber numberTwo = getNumberByInt(digitTwo);
 
 		    for (ESegment s : numberTwo.getSegmentList())
 		    {
 			canvas.drawRect(s.getLeft() + offsetTwoX, s.getTop() + offsetTwoY, s.getRight() + offsetTwoX, s.getBottom() + offsetTwoY, white);
 		    }
+		} else if (score < 1000)
+		{
+		    int offsetOneX = (int) ((canvasWidth + numberWidth) / 2 + numberDistance);
+		    int offsetOneY = numberHeight;
+
+		    ENumber numberOne = getNumberByInt(digitOne);
+
+		    for (ESegment s : numberOne.getSegmentList())
+		    {
+			canvas.drawRect(s.getLeft() + offsetOneX, s.getTop() + offsetOneY, s.getRight() + offsetOneX, s.getBottom() + offsetOneY, white);
+		    }
+
+		    int offsetTwoX = (canvasWidth - numberWidth) / 2;
+		    int offsetTwoY = numberHeight;
+
+		    ENumber numberTwo = getNumberByInt(digitTwo);
+
+		    for (ESegment s : numberTwo.getSegmentList())
+		    {
+			canvas.drawRect(s.getLeft() + offsetTwoX, s.getTop() + offsetTwoY, s.getRight() + offsetTwoX, s.getBottom() + offsetTwoY, white);
+		    }
+
+		    int offsetThreeX = (int) (canvasWidth - (3.0f * numberWidth)) / 2 - numberDistance;
+		    int offsetThreeY = numberHeight;
+
+		    ENumber numberThree = getNumberByInt(digitThree);
+
+		    for (ESegment s : numberThree.getSegmentList())
+		    {
+			canvas.drawRect(s.getLeft() + offsetThreeX, s.getTop() + offsetThreeY, s.getRight() + offsetThreeX, s.getBottom() + offsetThreeY, white);
+		    }
 		}
 
 		// Draw line
 		int lineWidth = (int) PyngController.getContext().getResources().getDimension(R.dimen.lineWidth);
-		canvas.drawRect(0, height / 2 - lineWidth, width, height / 2 + lineWidth, white);
+		canvas.drawRect(0, height / 2 - lineWidth, canvasWidth, height / 2 + lineWidth, white);
 
 		// Draw ball
 		Ball b = PyngController.getBall();
@@ -182,23 +213,39 @@ public class DrawingPanel extends SurfaceView implements Runnable
 	    }
 	}
     }
-    
+
+    public int getNthDigit(int number, int base, int n)
+    {
+	return (int) ((number / Math.pow(base, n - 1)) % base);
+    }
+
     private ENumber getNumberByInt(int i)
     {
-	    switch (i)
-	    {
-		case 0 : return  ENumber.ZERO;
-		case 1 : return  ENumber.ONE;
-		case 2 : return  ENumber.TWO; 
-		case 3 : return  ENumber.THREE;
-		case 4 : return  ENumber.FOUR; 
-		case 5 : return  ENumber.FIVE; 
-		case 6 : return  ENumber.SIX; 
-		case 7 : return  ENumber.SEVEN; 
-		case 8 : return  ENumber.EIGHT; 
-		case 9 : return  ENumber.NINE;
-		default : return ENumber.ZERO;
-	    }
+	switch (i)
+	{
+	    case 0:
+		return ENumber.ZERO;
+	    case 1:
+		return ENumber.ONE;
+	    case 2:
+		return ENumber.TWO;
+	    case 3:
+		return ENumber.THREE;
+	    case 4:
+		return ENumber.FOUR;
+	    case 5:
+		return ENumber.FIVE;
+	    case 6:
+		return ENumber.SIX;
+	    case 7:
+		return ENumber.SEVEN;
+	    case 8:
+		return ENumber.EIGHT;
+	    case 9:
+		return ENumber.NINE;
+	    default:
+		return ENumber.ZERO;
+	}
     }
 
     private enum ENumber
@@ -233,8 +280,13 @@ public class DrawingPanel extends SurfaceView implements Runnable
     private enum ESegment
     {
 
-	A(0, 0, w, l), B(w - l, 0, w, (h + l) / 2), C(w - l, (h - l) / 2, w, h), D(0, h - l, w, h), E(0, (h - l) / 2, l, h), F(0, 0, l, (h + l) / 2), G(0, (h - l) / 2, w,
-		(h + l) / 2);
+	A(0, 0, numberWidth, numberLine),
+	B(numberWidth - numberLine, 0, numberWidth, (numberHeight + numberLine) / 2),
+	C(numberWidth - numberLine, (numberHeight - numberLine) / 2, numberWidth, numberHeight),
+	D(0, numberHeight - numberLine, numberWidth, numberHeight),
+	E(0, (numberHeight - numberLine) / 2, numberLine, numberHeight),
+	F(0, 0, numberLine, (numberHeight + numberLine) / 2),
+	G(0, (numberHeight - numberLine) / 2, numberWidth, (numberHeight + numberLine) / 2);
 
 	private float left;
 	private float top;

@@ -214,6 +214,8 @@ public class PyngActivity extends Activity
 
 	return true;
     }
+    
+    
 
     public static void draw()
     {
