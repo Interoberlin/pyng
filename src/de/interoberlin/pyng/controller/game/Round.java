@@ -7,16 +7,16 @@ public class Round implements Runnable
 {
     private static Round     round;
 
-    private Thread	   thread      = null;
-    private boolean	  running     = false;
-    private boolean	  paused      = false;
+    private Thread	   thread     = null;
+    private boolean	  running    = false;
+    private boolean	  paused     = false;
 
-    private int	      points;
-    private static final int INIT_POINTS = 109;
+    private int	      score;
+    private static final int INIT_SCORE = 0;
 
     private Round()
     {
-	setPoints(INIT_POINTS);
+	setScore(INIT_SCORE);
     }
 
     public static Round getInstance()
@@ -31,14 +31,12 @@ public class Round implements Runnable
 
     public void init()
     {
-	setPoints(INIT_POINTS);
+	setScore(INIT_SCORE);
 	PyngController.init();
     }
 
     public void start()
     {
-	System.out.println("Interoberlin Round start");
-
 	PyngActivity.uiToast("Round started");
 	running = true;
 	thread = new Thread(this);
@@ -47,8 +45,6 @@ public class Round implements Runnable
 
     public void stop()
     {
-	System.out.println("Interoberlin Round stop");
-
 	PyngActivity.uiToast("Round stopped");
 	boolean retry = true;
 	running = false;
@@ -68,13 +64,11 @@ public class Round implements Runnable
 
     public void pause()
     {
-	System.out.println("Interoberlin Round pause");
 	paused = true;
     }
 
     public void resume()
     {
-	System.out.println("Interoberlin Round resume");
 	paused = false;
     }
 
@@ -91,36 +85,53 @@ public class Round implements Runnable
     @Override
     public void run()
     {
+	int fps = PyngController.getDesiredFPS();
+	long millisBefore = 0;
+	long millisAfter = 0;
+	long millisFrame = 1000 / fps;
+
 	while (running)
 	{
 	    if (!paused)
 	    {
+		millisBefore = System.currentTimeMillis();
+
+		// if (millisBefore - millisAfter > millisFrame)
+		// {
+		if ((millisBefore - millisAfter) != 0)
+		{
+		    PyngController.setRealFPS((int) (fps * millisFrame / (millisBefore - millisAfter)));
+		}
+
+		PyngController.updateBall();
+		PyngController.updatePanel();
+		millisAfter = System.currentTimeMillis();
+		
 		try
 		{
 		    Thread.sleep(10);
 		} catch (InterruptedException e)
 		{
+		    // TODO Auto-generated catch block
 		    e.printStackTrace();
 		}
-
-		PyngController.step();
-		PyngController.setPanelPos();
+		// }
 	    }
 	}
     }
 
-    public int getPoints()
+    public int getScore()
     {
-	return points;
+	return score;
     }
 
-    public void setPoints(int points)
+    public void setScore(int score)
     {
-	this.points = points;
+	this.score = score;
     }
 
-    public void incrementPoints()
+    public void incrementScore()
     {
-	this.points++;
+	this.score++;
     }
 }

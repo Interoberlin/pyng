@@ -60,6 +60,12 @@ public class PyngActivity extends Activity
     private static TextView       threeTvSecond;
     private static TextView       threeTvThird;
     private static TextView       threeTvFourth;
+    
+    private static LinearLayout   fourLnr;
+    private static TextView       fourTvFirst;
+    private static TextView       fourTvSecond;
+    private static TextView       fourTvThird;
+    private static TextView       fourTvFourth;
 
     private static SoundPool      soundPool;
     private static int	    soundBing;
@@ -160,6 +166,8 @@ public class PyngActivity extends Activity
     protected void onDestroy()
     {
 	super.onDestroy();
+	controller.stop(activity);
+	AcceleratorListener.getInstance(activity).stop();
     }
 
     @Override
@@ -243,6 +251,12 @@ public class PyngActivity extends Activity
 	    threeTvSecond = new TextView(activity);
 	    threeTvThird = new TextView(activity);
 	    threeTvFourth = new TextView(activity);
+	    
+	    fourLnr = new LinearLayout(activity);
+	    fourTvFirst = new TextView(activity);
+	    fourTvSecond = new TextView(activity);
+	    fourTvThird = new TextView(activity);
+	    fourTvFourth = new TextView(activity);
 
 	    if (PyngController.getBall() != null)
 	    {
@@ -257,10 +271,15 @@ public class PyngActivity extends Activity
 	    twoTvThird.setText(String.valueOf(AcceleratorListener.getRawY()));
 	    twoTvFourth.setText("");
 
-	    threeTvFirst.setText(R.string.points);
-	    threeTvSecond.setText(String.valueOf(Round.getInstance().getPoints()));
+	    threeTvFirst.setText(R.string.score);
+	    threeTvSecond.setText(String.valueOf(Round.getInstance().getScore()));
 	    threeTvThird.setText("");
 	    threeTvFourth.setText("");
+	    
+	    fourTvFirst.setText(R.string.fps);
+	    fourTvSecond.setText(String.valueOf(PyngController.getRealFPS()));
+	    fourTvThird.setText("");
+	    fourTvFourth.setText("");
 
 	    oneLnr.addView(oneTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    oneLnr.addView(oneTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
@@ -276,11 +295,17 @@ public class PyngActivity extends Activity
 	    threeLnr.addView(threeTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    threeLnr.addView(threeTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 	    threeLnr.addView(threeTvFourth, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    
+	    fourLnr.addView(fourTvFirst, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    fourLnr.addView(fourTvSecond, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    fourLnr.addView(fourTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
+	    fourLnr.addView(fourTvFourth, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 
 	    lnr.setOrientation(1);
 	    lnr.addView(oneLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	    lnr.addView(twoLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	    lnr.addView(threeLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	    lnr.addView(fourLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
     }
 

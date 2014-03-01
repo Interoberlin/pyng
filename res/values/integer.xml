@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="fps">25</integer>
+    <integer name="tilt_max">10</integer>
+    <integer name="speed_max">20</integer>
+    <integer name="balance">1</integer>
+    <integer name="ballStartSpeed">3</integer>
+
+</resources>

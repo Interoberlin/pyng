@@ -2,13 +2,13 @@
 <resources>
 
     <dimen name="ballRadius">8dp</dimen>
-    <dimen name="panelWidth">40dp</dimen>
+    <dimen name="panelWidth">50dp</dimen>
     <dimen name="panelHeight">8dp</dimen>
-    <dimen name="lineWidth">3dp</dimen>
+    <dimen name="lineWidth">2dp</dimen>
     
     <dimen name="numberDistance">15dp</dimen>
     <dimen name="numberLine">5dp</dimen>
-    <dimen name="numberWidth">40dp</dimen>
-    <dimen name="numberHeight">80dp</dimen>
+    <dimen name="numberWidth">35dp</dimen>
+    <dimen name="numberHeight">70dp</dimen>
 
 </resources>

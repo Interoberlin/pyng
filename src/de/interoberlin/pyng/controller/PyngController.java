@@ -4,7 +4,9 @@ import tv.ouya.console.api.OuyaController;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.SparseBooleanArray;
+import de.interoberlin.pyng.R;
 import de.interoberlin.pyng.controller.accelerometer.AcceleratorListener;
 import de.interoberlin.pyng.controller.game.Game;
 import de.interoberlin.pyng.controller.game.Round;
@@ -43,12 +45,15 @@ public class PyngController extends Application
     }
 
     private static Context	    context;
+    private static Resources	  resources;
+    private static int		realFps     = 0;
 
     @Override
     public void onCreate()
     {
 	super.onCreate();
 	context = this;
+	resources = this.getResources();
     }
 
     public static Context getContext()
@@ -90,7 +95,9 @@ public class PyngController extends Application
 	initialized = true;
 	float direction = RandomNumber.getRandomNumber(135, 225);
 
-	ball = new Ball(new Vector2(Properties.getCanvasWidth() / 2, Properties.getCanvasHeight() / 2), direction, 3);
+	int ballStartSpeed = resources.getInteger(R.integer.ballStartSpeed);
+	
+	ball = new Ball(new Vector2(Properties.getCanvasWidth() / 2, Properties.getCanvasHeight() / 2), direction, ballStartSpeed);
 	panel = new Panel(new Vector2(Properties.getCanvasWidth() / 2, 0));
     }
 
@@ -119,10 +126,25 @@ public class PyngController extends Application
 	return panel;
     }
 
+    public static int getDesiredFPS()
+    {
+	return resources.getInteger(R.integer.fps);
+    }
+
+    public static int getRealFPS()
+    {
+	return realFps;
+    }
+
+    public static void setRealFPS(int fps)
+    {
+	PyngController.realFps = fps;
+    }
+
     /**
-     * Moves ball one step forward
+     * Updates ball position
      */
-    public static void step()
+    public static void updateBall()
     {
 	int w = Properties.getCanvasWidth();
 	int h = Properties.getCanvasHeight();
@@ -170,7 +192,7 @@ public class PyngController extends Application
 	    ball.setDirection(180 - (ballX - panelX) / panelWidth * 90);
 	    // ball.setDirection((ball.getDirection() - 180) * -1);
 	    ball.setSpeed(ball.getSpeed() + 0.005f);
-	    Round.getInstance().incrementPoints();
+	    Round.getInstance().incrementScore();
 	    PyngActivity.playSound(ESound.BING);
 	}
 
@@ -186,21 +208,44 @@ public class PyngController extends Application
 	}
     }
 
-    public static void setPanelPos()
+    /**
+     * Updates panel position
+     */
+    public static void updatePanel()
     {
-	float x = Properties.getCanvasWidth() / 2 - (AcceleratorListener.getRawX() * Properties.getCanvasWidth() / 10);
-	float panelWidth = Properties.getMinDimension() / 8;
+	final int TILT_MAX = resources.getInteger(R.integer.tilt_max);
+	final int SPEED_MAX = resources.getInteger(R.integer.speed_max);
+	final int BALANCE = resources.getInteger(R.integer.balance);
 
-	if (x < panelWidth / 2)
+	final float m = -SPEED_MAX / (TILT_MAX - BALANCE);
+	final float n = -(BALANCE * SPEED_MAX) / (TILT_MAX - BALANCE);
+	final float tilt = AcceleratorListener.getRawX();
+
+	float speed = 0;
+
+	if (tilt > BALANCE)
 	{
-	    x = panelWidth / 2;
-	}
-	if (x > Properties.getCanvasWidth() - panelWidth / 2)
+	    speed = m * tilt + n;
+	} else if (tilt < -BALANCE)
 	{
-	    x = Properties.getCanvasWidth() - panelWidth / 2;
+	    speed = m * tilt - n;
 	}
 
-	panel.setPos(new Vector2(x, 0));
+	float panelWidth = panel.getWidth();
+	float panelX = panel.getPos().getX();
+
+	panelX += speed;
+
+	if (panelX < panelWidth / 2)
+	{
+	    panelX = panelWidth / 2;
+	}
+	if (panelX > Properties.getCanvasWidth() - panelWidth / 2)
+	{
+	    panelX = Properties.getCanvasWidth() - panelWidth / 2;
+	}
+
+	panel.setPos(new Vector2(panelX, 0));
 
     }
 

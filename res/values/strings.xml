@@ -29,7 +29,8 @@
     <string name="cbAutoRefresh">Auto Refresh</string>
     <string name="ball">Ball</string>
     <string name="tilt">Tilt</string>
-    <string name="points">Points</string>
+    <string name="score">Score</string>
+    <string name="fps">FPS</string>
 
     <string-array name="loglevel">
         <item>TRACE</item>

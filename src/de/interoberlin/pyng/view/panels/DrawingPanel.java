@@ -3,7 +3,6 @@ package de.interoberlin.pyng.view.panels;
 import java.util.ArrayList;
 import java.util.List;
 
-import tv.ouya.console.api.OuyaController;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -13,6 +12,7 @@ import android.view.SurfaceView;
 import de.interoberlin.pyng.R;
 import de.interoberlin.pyng.controller.PyngController;
 import de.interoberlin.pyng.controller.game.Round;
+import de.interoberlin.pyng.model.geometry.Vector2;
 import de.interoberlin.pyng.model.objects.Ball;
 import de.interoberlin.pyng.model.objects.Panel;
 import de.interoberlin.pyng.model.settings.Properties;
@@ -89,34 +89,55 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		// Lock canvas
 		Canvas canvas = surfaceHolder.lockCanvas();
 
-		Properties.setCanvasHeight(canvas.getHeight());
-		Properties.setCanvasWidth(canvas.getWidth());
+		// Set dimensions
+		int canvasWidth = canvas.getWidth();
+		int canvasHeight = canvas.getHeight();
+
+		Properties.setCanvasHeight(canvasHeight);
+		Properties.setCanvasWidth(canvasWidth);
+
+		// Set ball
+		Ball b = PyngController.getBall();
 
 		// Set colors
 		Paint white = new Paint();
 		Paint background = new Paint();
+		Paint numberColor = new Paint();
 
 		white.setARGB(255, 255, 255, 255);
+		background.setARGB(255, 0, 0, 0);
+		numberColor.setARGB(255, 255, 255, 255);
 
-		if (PyngController.isKeyPressed(OuyaController.BUTTON_O))
+		int rgbMax = 255;
+		int rgbMin = 25;
+		int dMin = (int) 0.5 * numberHeight;
+		int dMax = 2 * numberHeight;
+		Vector2 center = new Vector2(canvasWidth / 2, 1.5f * numberHeight);
+		int distance = 0;
+		int rgb = 0;
+
+		if (b != null)
 		{
-		    background.setARGB(255, 0, 0, 255);
-		} else if (PyngController.isKeyPressed(OuyaController.BUTTON_U))
-		{
-		    background.setARGB(255, 0, 255, 0);
-		} else
-		{
-		    background.setARGB(255, 0, 0, 0);
+		    distance = b.getPos().getDistance(center);
 		}
 
-		// Set dimensions
-		int canvasWidth = Properties.getCanvasWidth();
-		int height = Properties.getCanvasHeight();
+		if (distance < dMin)
+		{
+		    rgb = rgbMin;
+		} else if (distance > dMax)
+		{
+		    rgb = rgbMax;
+		} else
+		{
+		    rgb = (rgbMax * distance / (dMax - dMin));
+		}
+
+		numberColor.setARGB(255, rgb, rgb, rgb);
 
 		// Clear canvas
-		canvas.drawRect(0, 0, canvasWidth, height, background);
+		canvas.drawRect(0, 0, canvasWidth, canvasHeight, background);
 
-		int score = Round.getInstance().getPoints();
+		int score = Round.getInstance().getScore();
 
 		// Draw score
 		int digitOne = getNthDigit(score, 10, 1);
@@ -132,7 +153,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		    for (ESegment s : number.getSegmentList())
 		    {
-			canvas.drawRect(s.getLeft() + offsetX, s.getTop() + offsetY, s.getRight() + offsetX, s.getBottom() + offsetY, white);
+			canvas.drawRect(s.getLeft() + offsetX, s.getTop() + offsetY, s.getRight() + offsetX, s.getBottom() + offsetY, numberColor);
 		    }
 		} else if (score < 100)
 		{
@@ -143,7 +164,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		    for (ESegment s : numberOne.getSegmentList())
 		    {
-			canvas.drawRect(s.getLeft() + offsetOneX, s.getTop() + offsetOneY, s.getRight() + offsetOneX, s.getBottom() + offsetOneY, white);
+			canvas.drawRect(s.getLeft() + offsetOneX, s.getTop() + offsetOneY, s.getRight() + offsetOneX, s.getBottom() + offsetOneY, numberColor);
 		    }
 
 		    int offsetTwoX = (int) ((canvasWidth - numberDistance) / 2 - numberWidth);
@@ -153,7 +174,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		    for (ESegment s : numberTwo.getSegmentList())
 		    {
-			canvas.drawRect(s.getLeft() + offsetTwoX, s.getTop() + offsetTwoY, s.getRight() + offsetTwoX, s.getBottom() + offsetTwoY, white);
+			canvas.drawRect(s.getLeft() + offsetTwoX, s.getTop() + offsetTwoY, s.getRight() + offsetTwoX, s.getBottom() + offsetTwoY, numberColor);
 		    }
 		} else if (score < 1000)
 		{
@@ -164,7 +185,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		    for (ESegment s : numberOne.getSegmentList())
 		    {
-			canvas.drawRect(s.getLeft() + offsetOneX, s.getTop() + offsetOneY, s.getRight() + offsetOneX, s.getBottom() + offsetOneY, white);
+			canvas.drawRect(s.getLeft() + offsetOneX, s.getTop() + offsetOneY, s.getRight() + offsetOneX, s.getBottom() + offsetOneY, numberColor);
 		    }
 
 		    int offsetTwoX = (canvasWidth - numberWidth) / 2;
@@ -174,7 +195,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		    for (ESegment s : numberTwo.getSegmentList())
 		    {
-			canvas.drawRect(s.getLeft() + offsetTwoX, s.getTop() + offsetTwoY, s.getRight() + offsetTwoX, s.getBottom() + offsetTwoY, white);
+			canvas.drawRect(s.getLeft() + offsetTwoX, s.getTop() + offsetTwoY, s.getRight() + offsetTwoX, s.getBottom() + offsetTwoY, numberColor);
 		    }
 
 		    int offsetThreeX = (int) (canvasWidth - (3.0f * numberWidth)) / 2 - numberDistance;
@@ -184,16 +205,15 @@ public class DrawingPanel extends SurfaceView implements Runnable
 
 		    for (ESegment s : numberThree.getSegmentList())
 		    {
-			canvas.drawRect(s.getLeft() + offsetThreeX, s.getTop() + offsetThreeY, s.getRight() + offsetThreeX, s.getBottom() + offsetThreeY, white);
+			canvas.drawRect(s.getLeft() + offsetThreeX, s.getTop() + offsetThreeY, s.getRight() + offsetThreeX, s.getBottom() + offsetThreeY, numberColor);
 		    }
 		}
 
 		// Draw line
 		int lineWidth = (int) PyngController.getContext().getResources().getDimension(R.dimen.lineWidth);
-		canvas.drawRect(0, height / 2 - lineWidth, canvasWidth, height / 2 + lineWidth, white);
+		canvas.drawRect(0, canvasHeight / 2 - lineWidth, canvasWidth, canvasHeight / 2 + lineWidth, white);
 
 		// Draw ball
-		Ball b = PyngController.getBall();
 		if (b != null)
 		{
 		    float ballX = b.getPos().getX();
@@ -206,7 +226,7 @@ public class DrawingPanel extends SurfaceView implements Runnable
 		Panel p = PyngController.getPanel();
 		if (p != null)
 		{
-		    canvas.drawRect(p.getPos().getX() - p.getWidth() / 2, height - p.getHeight(), p.getPos().getX() + p.getWidth() / 2, height, white);
+		    canvas.drawRect(p.getPos().getX() - p.getWidth() / 2, canvasHeight - p.getHeight(), p.getPos().getX() + p.getWidth() / 2, canvasHeight, white);
 		}
 
 		surfaceHolder.unlockCanvasAndPost(canvas);

@@ -25,8 +25,6 @@ public class Game implements Runnable
 
     public void start()
     {
-	System.out.println("Interoberlin Game start");
-	
 	PyngActivity.uiToast("Game started");
 	running = true;
 	thread = new Thread(this);
@@ -35,21 +33,22 @@ public class Game implements Runnable
 
     public void stop()
     {
-	System.out.println("Interoberlin Game stop");
-	
 	PyngActivity.uiToast("Game stopped");
 	boolean retry = true;
 	running = false;
 
-	while (retry)
+	if (thread != null)
 	{
-	    try
+	    while (retry)
 	    {
-		thread.join();
-		retry = false;
-	    } catch (InterruptedException e)
-	    {
-		e.printStackTrace();
+		try
+		{
+		    thread.join();
+		    retry = false;
+		} catch (InterruptedException e)
+		{
+		    e.printStackTrace();
+		}
 	    }
 	}
     }
@@ -73,9 +72,9 @@ public class Game implements Runnable
 		{
 		    e.printStackTrace();
 		}
-		
+
 		Round.getInstance().init();
-		
+
 		try
 		{
 		    Thread.sleep(1000);

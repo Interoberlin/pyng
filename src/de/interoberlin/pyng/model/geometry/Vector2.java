@@ -30,4 +30,9 @@ public class Vector2
     {
 	this.y = y;
     }
+    
+    public int getDistance(Vector2 v)
+    {
+	return (int) Math.sqrt(Math.pow(this.getX()-v.getX(), 2)+Math.pow(this.getY()-v.getY(), 2));
+    }
 }
