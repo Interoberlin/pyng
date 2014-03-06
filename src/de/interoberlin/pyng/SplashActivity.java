@@ -25,17 +25,17 @@ public class SplashActivity extends Activity
 	{
 	    public void run()
 	    {
-		try
-		{
-		    sleep(1500);
-		} catch (InterruptedException e)
-		{
-		    e.printStackTrace();
-		} finally
-		{
+//		try
+//		{
+//		    sleep(1500);
+//		} catch (InterruptedException e)
+//		{
+//		    e.printStackTrace();
+//		} finally
+//		{
 		    Intent openStartingPoint = new Intent(SplashActivity.this, PyngActivity.class);
 		    startActivity(openStartingPoint);
-		}
+//		}
 	    }
 	};
 	timer.start();

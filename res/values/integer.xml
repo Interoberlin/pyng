@@ -3,7 +3,7 @@
 
     <integer name="fps">25</integer>
     <integer name="tilt_max">10</integer>
-    <integer name="speed_max">20</integer>
+    <integer name="acceleration_max">15</integer>
     <integer name="balance">1</integer>
     <integer name="ballStartSpeed">3</integer>
 

@@ -7,12 +7,13 @@ public class Round implements Runnable
 {
     private static Round     round;
 
-    private Thread	   thread     = null;
-    private boolean	  running    = false;
-    private boolean	  paused     = false;
+    private Thread	   thread      = null;
+    private boolean	  running     = false;
+    private boolean	  pausedBall  = false;
+    private boolean	  pausedPanel = false;
 
     private int	      score;
-    private static final int INIT_SCORE = 0;
+    private static final int INIT_SCORE  = 0;
 
     private Round()
     {
@@ -62,14 +63,24 @@ public class Round implements Runnable
 	}
     }
 
-    public void pause()
+    public void pausePanel()
     {
-	paused = true;
+	pausedPanel = true;
     }
 
-    public void resume()
+    public void pauseBall()
     {
-	paused = false;
+	pausedBall = true;
+    }
+
+    public void resumePanel()
+    {
+	pausedPanel = false;
+    }
+
+    public void resumeBall()
+    {
+	pausedBall = false;
     }
 
     public boolean isRunning()
@@ -77,9 +88,14 @@ public class Round implements Runnable
 	return running;
     }
 
-    public boolean isPaused()
+    public boolean isBallPaused()
     {
-	return paused;
+	return pausedBall;
+    }
+
+    public boolean isPanelPaused()
+    {
+	return pausedPanel;
     }
 
     @Override
@@ -92,32 +108,31 @@ public class Round implements Runnable
 
 	while (running)
 	{
-	    if (!paused)
+	    millisBefore = System.currentTimeMillis();
+
+	    // if (millisBefore - millisAfter > millisFrame)
+	    // {
+	    if ((millisBefore - millisAfter) != 0)
 	    {
-		millisBefore = System.currentTimeMillis();
-
-		// if (millisBefore - millisAfter > millisFrame)
-		// {
-		if ((millisBefore - millisAfter) != 0)
-		{
-		    PyngController.setRealFPS((int) (fps * millisFrame / (millisBefore - millisAfter)));
-		}
-
-		PyngController.updateBall();
-		PyngController.updatePanel();
-		millisAfter = System.currentTimeMillis();
-		
-		try
-		{
-		    Thread.sleep(10);
-		} catch (InterruptedException e)
-		{
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		// }
+		PyngController.setRealFPS((int) (fps * millisFrame / (millisBefore - millisAfter)));
 	    }
+
+	    if (!pausedBall) PyngController.updateBall();
+	    if (!pausedPanel) PyngController.updatePanel();
+	    
+	    millisAfter = System.currentTimeMillis();
+
+	    try
+	    {
+		Thread.sleep(10);
+	    } catch (InterruptedException e)
+	    {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	    // }
 	}
+
     }
 
     public int getScore()

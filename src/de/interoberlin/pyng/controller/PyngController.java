@@ -80,14 +80,14 @@ public class PyngController extends Application
 
     public void pause(Activity activity)
     {
-	AcceleratorListener.getInstance(activity).stop();
-	Round.getInstance().pause();
+	// AcceleratorListener.getInstance(activity).stop();
+	Round.getInstance().pauseBall();
     }
 
     public void resume(Activity activity)
     {
-	AcceleratorListener.getInstance(activity).start();
-	Round.getInstance().resume();
+	// AcceleratorListener.getInstance(activity).start();
+	Round.getInstance().resumeBall();
     }
 
     public static void init()
@@ -96,9 +96,9 @@ public class PyngController extends Application
 	float direction = RandomNumber.getRandomNumber(135, 225);
 
 	int ballStartSpeed = resources.getInteger(R.integer.ballStartSpeed);
-	
+
 	ball = new Ball(new Vector2(Properties.getCanvasWidth() / 2, Properties.getCanvasHeight() / 2), direction, ballStartSpeed);
-	panel = new Panel(new Vector2(Properties.getCanvasWidth() / 2, 0));
+	panel = new Panel(new Vector2(Properties.getCanvasWidth() / 2, 0), 0);
     }
 
     public boolean isGameRunning()
@@ -113,7 +113,7 @@ public class PyngController extends Application
 
     public boolean isRoundPaused()
     {
-	return Round.getInstance().isPaused();
+	return Round.getInstance().isBallPaused();
     }
 
     public static Ball getBall()
@@ -214,27 +214,31 @@ public class PyngController extends Application
     public static void updatePanel()
     {
 	final int TILT_MAX = resources.getInteger(R.integer.tilt_max);
-	final int SPEED_MAX = resources.getInteger(R.integer.speed_max);
-	final int BALANCE = resources.getInteger(R.integer.balance);
+	final int ACCELERATION_MAX = resources.getInteger(R.integer.acceleration_max);
+	final float BALANCE = 0f;
 
-	final float m = -SPEED_MAX / (TILT_MAX - BALANCE);
-	final float n = -(BALANCE * SPEED_MAX) / (TILT_MAX - BALANCE);
+	final float m = -ACCELERATION_MAX / (TILT_MAX - BALANCE);
+	final float n = -(BALANCE * ACCELERATION_MAX) / (TILT_MAX - BALANCE);
 	final float tilt = AcceleratorListener.getRawX();
 
-	float speed = 0;
+	float acceleration = 0;
 
 	if (tilt > BALANCE)
 	{
-	    speed = m * tilt + n;
+	    acceleration = m * tilt + n;
 	} else if (tilt < -BALANCE)
 	{
-	    speed = m * tilt - n;
+	    acceleration = m * tilt - n;
 	}
 
 	float panelWidth = panel.getWidth();
 	float panelX = panel.getPos().getX();
+	float panelSpeed = panel.getSpeed();
 
-	panelX += speed;
+	 panelSpeed += Math.signum(acceleration) * Math.pow(acceleration, 0.5);
+//	panelSpeed += 5 * acceleration;
+	
+	panelX += panelSpeed;
 
 	if (panelX < panelWidth / 2)
 	{
