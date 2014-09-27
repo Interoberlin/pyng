@@ -1,0 +1,50 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.interoberlin.pyng"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" 
+        android:name="de.interoberlin.pyng.controller.PyngController">
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme.FullScreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="tv.ouya.intent.category.GAME"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="de.interoberlin.pyng.view.activities.PyngActivity"
+            android:label="@string/title_activity_pyng"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.interoberlin.pyng.view.activities.LogActivity"
+            android:label="@string/title_activity_pyng"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.interoberlin.pyng.view.activities.SupportActivity"
+            android:label="@string/title_activity_pyng"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.interoberlin.pyng.view.activities.SettingsActivity"
+            android:label="@string/title_activity_pyng"
+            android:screenOrientation="portrait" >
+        </activity>
+    </application>
+
+</manifest>
