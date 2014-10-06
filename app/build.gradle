@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'maven'
+import java.util.regex.Pattern
 
 buildscript {
     repositories {
@@ -20,41 +21,137 @@ android {
     compileSdkVersion 19
     buildToolsVersion "19.1.0"
 
-    lintOptions {
-        abortOnError false
-    }
     defaultConfig {
-        applicationId "de.interoberlin.pyng"
+        applicationId groupId + '.' + artifactId
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+        versionCode System.getenv("BUILD_NUMBER") as Integer ?: 9999
+        versionName versionMajor + "." + versionMinor + "." + versionPatch
+    }
+    signingConfigs {
+        release {
+            if (System.getenv("KEYSTORE") != null)
+                storeFile file(System.getenv("KEYSTORE"))
+            if (System.getenv("KEYSTORE_PASSWORD") != null)
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+            if (System.getenv("KEY_ALIAS") != null)
+                keyAlias System.getenv("KEY_ALIAS")
+            if (System.getenv("KEY_PASSWORD") != null)
+                keyPassword System.getenv("KEY_PASSWORD")
+        }
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            debuggable false
-            runProguard false
-        }
     }
 }
+
+if (System.getenv("BUILD_NUMBER") != null)
+    versionPatch = System.getenv("BUILD_NUMBER")
+if (System.getenv("GIT_COMMIT") != null)
+    versionPatch = versionPatch + '.' + System.getenv("GIT_COMMIT").substring(0,8)
+
+def apkName = 'app-release'
+def apkFile = file('build/outputs/apk/' + apkName + '.apk')
+def apkTargetName =  artifactId + '-' + versionMajor + '.' + versionMinor + '.' + versionPatch
+def manifestFile = file(System.getenv("FDROID_REPO") + '/../metadata/' + groupId + '.' + artifactId + '.txt')
+def description = "git log --format=%B -n 1".execute().text.trim()
+
+
+
+task publishFdroid(dependsOn: 'copy') {
+    println 'publish on fdroid'
+}
+
+task updateMetadata(type:Exec) {
+    workingDir System.getenv("FDROID_REPO") + '/..'
+    commandLine './fdroid'
+    args 'rewritemeta'
+
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
+}
+
+task writeMetadata {
+    def patternLicense = Pattern.compile("License:.*")
+    def manifestText = manifestFile.getText()
+    def matcherLicense = patternLicense.matcher(manifestText)
+    matcherLicense.find()
+    def manifestContent = matcherLicense.replaceAll("License:" + license)
+    manifestFile.write(manifestContent)
+
+    def patternWebsite = Pattern.compile("Web Site:.*")
+    manifestText = manifestFile.getText()
+    def matcherWebsite = patternWebsite.matcher(manifestText)
+    matcherWebsite.find()
+    manifestContent = matcherWebsite.replaceAll("Web Site:" + website)
+    manifestFile.write(manifestContent)
+
+    def patternSourcecode = Pattern.compile("Source Code:.*")
+    manifestText = manifestFile.getText()
+    def matcherSourcecode = patternSourcecode.matcher(manifestText)
+    matcherSourcecode.find()
+    manifestContent = matcherSourcecode.replaceAll("Source Code:" + sourcecode)
+    manifestFile.write(manifestContent)
+
+    def patternIssuetracker = Pattern.compile("Issue Tracker:.*")
+    manifestText = manifestFile.getText()
+    def matcherIssuetracker = patternIssuetracker.matcher(manifestText)
+    matcherIssuetracker.find()
+    manifestContent = matcherIssuetracker.replaceAll("Issue Tracker:" + issuetracker)
+    manifestFile.write(manifestContent)
+
+    def patternSummary = Pattern.compile("Summary:.*")
+    manifestText = manifestFile.getText()
+    def matcherSummary = patternSummary.matcher(manifestText)
+    matcherSummary.find()
+    manifestContent = matcherSummary.replaceAll("Summary:" + summary)
+    manifestFile.write(manifestContent)
+
+    def patternDescription = Pattern.compile("Description:.*")
+    manifestText = manifestFile.getText()
+    def matcherDescription = patternDescription.matcher(manifestText)
+    matcherLicense.find()
+    manifestContent = matcherDescription.replaceAll('Description:\n* ' + '\'\'\'' +versionMajor + '.' + versionMinor + '.' + versionPatch + '\'\'\' ' + description)
+    manifestFile.write(manifestContent)
+}
+
+task fdroidUpdate(type:Exec) {
+    workingDir System.getenv("FDROID_REPO") + '/..'
+    commandLine './fdroid'
+    args 'update'
+
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
+}
+
+task copy(type: Copy) {
+    from 'build/outputs/apk/' + apkName + '.apk'
+    into System.getenv("FDROID_REPO")
+
+    rename { String fileName ->
+        fileName.replace(apkName, apkTargetName)
+    }
+}
+
+task tidy(type: Delete) {
+    delete System.getenv("FDROID_REPO") + '/' + apkTargetName + '.apk'
+}
+
+publishFdroid.dependsOn fdroidUpdate
+fdroidUpdate.dependsOn updateMetadata
+updateMetadata.dependsOn writeMetadata
+writeMetadata.dependsOn copy
+copy.dependsOn tidy
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    // You must install or update the Support Repository through the SDK manager to use this dependency.
-    // compile 'com.android.support:support-v4:19.+'
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
-            pom.groupId = 'de.interoberlin'
-            pom.artifactId = 'pyng'
-            pom.version = '0.1.0'
-        }
-    }
+    compile 'de.interoberlin:sauvignon:0.1.0@aar'
 }
