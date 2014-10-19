@@ -31,19 +31,20 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="de.interoberlin.pyng.view.activities.LogActivity"
-            android:label="@string/title_activity_pyng"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="de.interoberlin.pyng.view.activities.SupportActivity"
-            android:label="@string/title_activity_pyng"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="de.interoberlin.pyng.view.activities.SettingsActivity"
             android:label="@string/title_activity_pyng"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.interoberlin.mate.lib.view.LogActivity"
+            android:label="@string/title_activity_pyng"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.interoberlin.mate.lib.view.AboutActivity"
+            android:label="@string/title_activity_pyng"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light">
         </activity>
     </application>
 

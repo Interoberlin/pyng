@@ -20,6 +20,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import de.interoberlin.mate.lib.view.AboutActivity;
+import de.interoberlin.mate.lib.view.LogActivity;
 import de.interoberlin.pyng.R;
 import de.interoberlin.pyng.controller.PyngController;
 import de.interoberlin.pyng.controller.accelerometer.AcceleratorListener;
@@ -209,7 +212,7 @@ public class PyngActivity extends Activity
 			}
 			case R.id.menu_support:
 			{
-				Intent i = new Intent(PyngActivity.this, SupportActivity.class);
+				Intent i = new Intent(PyngActivity.this, AboutActivity.class);
 				startActivity(i);
 				break;
 			}
@@ -299,7 +302,7 @@ public class PyngActivity extends Activity
 			fourLnr.addView(fourTvThird, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 			fourLnr.addView(fourTvFourth, new LayoutParams(200, LayoutParams.WRAP_CONTENT));
 
-			lnr.setOrientation(1);
+			lnr.setOrientation(LinearLayout.VERTICAL);
 			lnr.addView(oneLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			lnr.addView(twoLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			lnr.addView(threeLnr, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
