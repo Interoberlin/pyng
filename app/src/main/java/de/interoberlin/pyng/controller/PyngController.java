@@ -204,12 +204,4 @@ public class PyngController extends Application {
         panel.setPos(new Vector2(panelX, 0));
 
     }
-
-    public static void indicateKey(int keyCode, boolean pressed) {
-        buttons.put(keyCode, pressed);
-    }
-
-    public static boolean isKeyPressed(int keyCode) {
-        return buttons.get(keyCode, false);
-    }
 }
