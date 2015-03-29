@@ -310,20 +310,6 @@ public class PyngActivity extends Activity
 		}
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)
-	{
-		PyngController.indicateKey(keyCode, true);
-		return true;
-	}
-
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event)
-	{
-		PyngController.indicateKey(keyCode, false);
-		return true;
-	}
-
 	public static boolean playSound(ESound sound)
 	{
 		// Getting the user sound settings
